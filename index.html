@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Will You Be My Valentine?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #fff0f5 0%, #ffe4e9 100%);
+            font-family: 'Poppins', sans-serif;
+            color: #333;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 2rem;
+            max-width: 90%;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 8vw, 5rem);
+            color: #d81b60;
+            margin-bottom: 3rem;
+            font-weight: 700;
+            letter-spacing: -1px;
+            line-height: 1.1;
+        }
+
+        .buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 4rem;
+        }
+
+        .btn {
+            padding: 1rem 3rem;
+            font-size: clamp(1.2rem, 5vw, 1.8rem);
+            font-weight: 600;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 160px;
+        }
+
+        #yes {
+            background: #e91e63;
+            color: white;
+            box-shadow: 0 10px 25px rgba(233, 30, 99, 0.3);
+        }
+
+        #yes:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(233, 30, 99, 0.4);
+        }
+
+        #no {
+            background: #757575;
+            color: white;
+            position: relative;
+            box-shadow: 0 10px 25px rgba(117, 117, 117, 0.2);
+        }
+
+        #celebration {
+            display: none;
+            text-align: center;
+            z-index: 10;
+        }
+
+        #celebration h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            color: #d81b60;
+            margin-bottom: 2rem;
+            letter-spacing: -2px;
+        }
+
+        #kiss-gif {
+            max-width: 420px;
+            width: 90%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.18);
+            margin-top: 1.5rem;
+        }
+
+        /* Elegant floating hearts */
+        .heart {
+            position: absolute;
+            font-size: clamp(1.2rem, 3vw, 2.5rem);
+            color: rgba(233, 30, 99, 0.7);
+            pointer-events: none;
+            animation: float 12s linear infinite;
+            z-index: 5;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(120vh) translateX(-50%) rotate(0deg);
+                opacity: 0;
+            }
+            10% { opacity: 0.9; }
+            90% { opacity: 0.9; }
+            100% {
+                transform: translateY(-20vh) translateX(50%) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .buttons {
+                flex-direction: column;
+                gap: 2.5rem;
+            }
+            .btn {
+                padding: 1.2rem 4rem;
+            }
+            #kiss-gif {
+                max-width: 340px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container" id="main">
+        <h1>POOKIE<br>WILL YOU BE MY VALENTINE?</h1>
+        <div class="buttons">
+            <button class="btn" id="yes">YES</button>
+            <button class="btn" id="no">NO</button>
+        </div>
+    </div>
+
+    <div class="container" id="celebration">
+        <h1>I KNEW YOU LOVE ME ♡</h1>
+        <img id="kiss-gif" 
+             src="https://media.tenor.com/pzzrH2ISicMAAAAe/cute-love.png" 
+             alt="Cute cartoon boy and girl standing and kissing animated">
+    </div>
+
+    <script>
+        // Elegant floating hearts
+        function createHeart() {
+            const heart = document.createElement('div');
+            heart.className = 'heart';
+            heart.innerHTML = ['❤️', '💗', '💞', '💖'][Math.floor(Math.random() * 4)];
+            
+            const x = Math.random() * 100;
+            const drift = (Math.random() - 0.5) * 80;
+            
+            heart.style.left = x + 'vw';
+            heart.style.transform = `translateX(${drift}px)`;
+            heart.style.animationDuration = (Math.random() * 6 + 10) + 's';
+            heart.style.animationDelay = Math.random() * 5 + 's';
+            
+            document.body.appendChild(heart);
+            setTimeout(() => heart.remove(), 18000);
+        }
+
+        setInterval(createHeart, 700);
+
+        // NO button runs away
+        const noBtn = document.getElementById('no');
+        
+        function moveNo(e) {
+            e.preventDefault();
+            const maxX = window.innerWidth - noBtn.offsetWidth - 60;
+            const maxY = window.innerHeight - noBtn.offsetHeight - 60;
+            
+            noBtn.style.position = 'absolute';
+            noBtn.style.left = Math.random() * maxX + 'px';
+            noBtn.style.top = Math.random() * maxY + 'px';
+        }
+
+        noBtn.addEventListener('mouseover', moveNo);
+        noBtn.addEventListener('touchstart', moveNo, { passive: false });
+
+        // YES celebration
+        document.getElementById('yes').addEventListener('click', () => {
+            document.getElementById('main').style.display = 'none';
+            document.getElementById('celebration').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
